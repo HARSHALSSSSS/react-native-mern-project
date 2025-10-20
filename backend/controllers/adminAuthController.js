@@ -74,6 +74,7 @@ exports.adminRegister = async (req, res) => {
 exports.adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('Login attempt for:', email);
 
     // Validate required fields
     if (!email || !password) {
@@ -85,6 +86,8 @@ exports.adminLogin = async (req, res) => {
 
     // Check if admin exists
     const admin = await Admin.findOne({ email }).select('+password');
+    console.log('Admin found:', admin ? 'Yes' : 'No');
+    
     if (!admin) {
       return res.status(401).json({
         success: false,
@@ -93,7 +96,10 @@ exports.adminLogin = async (req, res) => {
     }
 
     // Check password
+    console.log('Comparing password...');
     const isPasswordCorrect = await admin.comparePassword(password);
+    console.log('Password correct:', isPasswordCorrect);
+    
     if (!isPasswordCorrect) {
       return res.status(401).json({
         success: false,
@@ -110,15 +116,18 @@ exports.adminLogin = async (req, res) => {
     }
 
     // Update last login without triggering password hash
+    console.log('Updating last login...');
     await Admin.findByIdAndUpdate(admin._id, { lastLogin: new Date() });
 
     // Generate token
+    console.log('Generating token...');
     const token = generateToken({
       id: admin._id,
       email: admin.email,
       role: admin.role,
     });
 
+    console.log('Login successful for:', email);
     res.json({
       success: true,
       message: 'Login successful',
@@ -135,10 +144,12 @@ exports.adminLogin = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error('Login error details:', error);
     res.status(500).json({
       success: false,
       message: 'Error logging in',
       error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
     });
   }
 };
