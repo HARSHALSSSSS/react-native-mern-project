@@ -11,17 +11,14 @@ const Event = require('../models/Event');
 
 exports.seedDatabase = async (req, res) => {
   try {
-    // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ email: 'admin@eventmanagement.com' });
-    
-    if (existingAdmin) {
-      // Delete existing admin and reseed
-      await Admin.deleteOne({ email: 'admin@eventmanagement.com' });
-      await User.deleteMany({ email: { $in: ['john@example.com', 'jane@example.com', 'mike@example.com'] } });
-      await Category.deleteMany({});
-      await Venue.deleteMany({});
-      await Event.deleteMany({});
-    }
+    // Clear ALL existing data before seeding
+    console.log('Clearing existing data...');
+    await Admin.deleteMany({});
+    await User.deleteMany({});
+    await Category.deleteMany({});
+    await Venue.deleteMany({});
+    await Event.deleteMany({});
+    console.log('Existing data cleared successfully');
 
     // Create Admin
     const admin = await Admin.create({
