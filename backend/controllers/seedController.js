@@ -15,10 +15,12 @@ exports.seedDatabase = async (req, res) => {
     const existingAdmin = await Admin.findOne({ email: 'admin@eventmanagement.com' });
     
     if (existingAdmin) {
-      return res.status(400).json({
-        success: false,
-        message: 'Database already seeded. Admin user exists.',
-      });
+      // Delete existing admin and reseed
+      await Admin.deleteOne({ email: 'admin@eventmanagement.com' });
+      await User.deleteMany({ email: { $in: ['john@example.com', 'jane@example.com', 'mike@example.com'] } });
+      await Category.deleteMany({});
+      await Venue.deleteMany({});
+      await Event.deleteMany({});
     }
 
     // Create Admin
@@ -32,30 +34,32 @@ exports.seedDatabase = async (req, res) => {
       permissions: ['manage_events', 'manage_users', 'manage_categories', 'manage_venues', 'view_bookings'],
     });
 
-    // Create Sample Users
-    const users = await User.insertMany([
-      {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        password: 'password123',
-        phone: '+1111111111',
-      },
-      {
-        firstName: 'Jane',
-        lastName: 'Smith',
-        email: 'jane@example.com',
-        password: 'password123',
-        phone: '+2222222222',
-      },
-      {
-        firstName: 'Mike',
-        lastName: 'Johnson',
-        email: 'mike@example.com',
-        password: 'password123',
-        phone: '+3333333333',
-      },
-    ]);
+    // Create Sample Users (using create to trigger pre-save hooks)
+    const user1 = await User.create({
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john@example.com',
+      password: 'password123',
+      phone: '+1111111111',
+    });
+
+    const user2 = await User.create({
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'jane@example.com',
+      password: 'password123',
+      phone: '+2222222222',
+    });
+
+    const user3 = await User.create({
+      firstName: 'Mike',
+      lastName: 'Johnson',
+      email: 'mike@example.com',
+      password: 'password123',
+      phone: '+3333333333',
+    });
+
+    const users = [user1, user2, user3];
 
     // Create Categories
     const categories = await Category.insertMany([

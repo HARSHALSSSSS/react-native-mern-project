@@ -1,0 +1,10 @@
+# Placeholder Icon
+# Replace this file with a real 1024x1024 PNG icon
+# For now, use an online icon generator or design tool
+
+This is a placeholder. To create app icons:
+1. Design a 1024x1024 PNG icon
+2. Name it "icon.png"
+3. Replace this file
+
+Or use: https://www.appicon.co/ to generate from any image

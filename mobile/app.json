@@ -4,6 +4,14 @@
     "slug": "event-manager-mobile",
     "version": "1.0.0",
     "sdkVersion": "54.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#667eea"
+    },
     "extra": {
       "apiUrl": "https://react-native-mern-project.onrender.com/api"
     },
@@ -22,7 +30,16 @@
     },
     "android": {
       "package": "com.eventmanagement.mobile",
-      "versionCode": 1
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#667eea"
+      },
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     },
     "scheme": "eventmanager",
     "plugins": [

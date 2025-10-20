@@ -27,6 +27,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setAlert(null); // Clear previous alerts
 
     if (!formData.email || !formData.password) {
       setAlert({ type: 'warning', message: 'Please fill in all fields' });
@@ -35,18 +36,39 @@ const Login = () => {
 
     try {
       setLoading(true);
+      setAlert({ type: 'info', message: 'Connecting to server...' });
+      
       const response = await adminAuthService.login(formData.email, formData.password);
+      
+      if (!response.data || !response.data.success) {
+        throw new Error('Invalid response from server');
+      }
+      
       const { admin, token } = response.data.data;
 
       login(admin, token);
-      setAlert({ type: 'success', message: 'Login successful!' });
+      setAlert({ type: 'success', message: 'Login successful! Redirecting...' });
 
       setTimeout(() => {
         navigate('/dashboard');
-      }, 1000);
+      }, 1500);
     } catch (error) {
-      setAlert({ type: 'danger', message: getErrorMessage(error) });
-    } finally {
+      console.error('Login error:', error);
+      
+      let errorMessage = 'Login failed. Please try again.';
+      
+      if (error.response) {
+        // Server responded with error
+        errorMessage = error.response.data?.message || 'Invalid email or password';
+      } else if (error.request) {
+        // Network error - no response received
+        errorMessage = 'Cannot connect to server. Please check your internet connection.';
+      } else {
+        // Other errors
+        errorMessage = error.message || 'An unexpected error occurred';
+      }
+      
+      setAlert({ type: 'danger', message: errorMessage });
       setLoading(false);
     }
   };
