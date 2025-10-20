@@ -109,9 +109,8 @@ exports.adminLogin = async (req, res) => {
       });
     }
 
-    // Update last login
-    admin.lastLogin = new Date();
-    await admin.save();
+    // Update last login without triggering password hash
+    await Admin.findByIdAndUpdate(admin._id, { lastLogin: new Date() });
 
     // Generate token
     const token = generateToken({
