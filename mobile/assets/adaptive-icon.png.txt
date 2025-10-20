@@ -1,0 +1,14 @@
+This should be replaced with an actual PNG image.
+
+For development purposes, you can:
+1. Create a 108x108px PNG image with your app icon
+2. Name it "adaptive-icon.png"
+3. Place it in the assets folder
+
+Or use an online placeholder service to generate one.
+
+Example Android Adaptive Icon Requirements:
+- Size: 108x108 pixels (1080x1080px for high res)
+- Format: PNG
+- Should have transparency
+- Center icon area should be 72x72 (on a 108x108 canvas)

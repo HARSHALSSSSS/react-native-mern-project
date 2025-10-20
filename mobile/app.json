@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "Event Manager Mobile",
+    "slug": "event-manager-mobile",
+    "version": "1.0.0",
+    "sdkVersion": "54.0.0",
+    "extra": {
+      "apiUrl": "http://192.168.0.103:5000/api"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTabletMode": true,
+      "bundleIdentifier": "com.eventmanagement.mobile",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.eventmanagement.mobile",
+      "versionCode": 1
+    },
+    "scheme": "eventmanager",
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location"
+        }
+      ]
+    ]
+  }
+}

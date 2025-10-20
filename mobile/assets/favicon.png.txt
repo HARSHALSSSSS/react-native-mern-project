@@ -1,0 +1,13 @@
+This should be replaced with an actual PNG image.
+
+For development purposes, you can:
+1. Create a 192x192px PNG image for your app favicon
+2. Name it "favicon.png"
+3. Place it in the assets folder
+
+Or use an online placeholder service to generate one.
+
+Favicon Requirements:
+- Size: 192x192 pixels
+- Format: PNG
+- Should represent your app
