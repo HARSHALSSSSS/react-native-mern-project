@@ -97,7 +97,17 @@ exports.adminLogin = async (req, res) => {
 
     // Check password
     console.log('Comparing password...');
-    const isPasswordCorrect = await admin.comparePassword(password);
+    let isPasswordCorrect = false;
+    try {
+      isPasswordCorrect = await admin.comparePassword(password);
+    } catch (compareError) {
+      console.error('Password comparison error:', compareError);
+      return res.status(500).json({
+        success: false,
+        message: 'Error verifying password',
+        error: compareError.message,
+      });
+    }
     console.log('Password correct:', isPasswordCorrect);
     
     if (!isPasswordCorrect) {
@@ -121,11 +131,21 @@ exports.adminLogin = async (req, res) => {
 
     // Generate token
     console.log('Generating token...');
-    const token = generateToken({
-      id: admin._id,
-      email: admin.email,
-      role: admin.role,
-    });
+    let token;
+    try {
+      token = generateToken({
+        id: admin._id,
+        email: admin.email,
+        role: admin.role,
+      });
+    } catch (tokenError) {
+      console.error('Token generation error:', tokenError);
+      return res.status(500).json({
+        success: false,
+        message: 'Error generating token',
+        error: tokenError.message,
+      });
+    }
 
     console.log('Login successful for:', email);
     res.json({

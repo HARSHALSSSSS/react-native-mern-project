@@ -46,6 +46,24 @@ app.get('/health', (req, res) => {
   res.json({
     success: true,
     message: 'Event Management API is running',
+    env: {
+      hasJWTSecret: !!process.env.JWT_SECRET,
+      hasJWTExpiry: !!process.env.JWT_EXPIRY,
+      nodeEnv: process.env.NODE_ENV,
+    },
+  });
+});
+
+// Debug route
+app.get('/api/debug', (req, res) => {
+  res.json({
+    success: true,
+    env: {
+      hasJWTSecret: !!process.env.JWT_SECRET,
+      hasJWTExpiry: !!process.env.JWT_EXPIRY,
+      hasDBURI: !!process.env.MONGODB_URI,
+      nodeEnv: process.env.NODE_ENV,
+    },
   });
 });
 
