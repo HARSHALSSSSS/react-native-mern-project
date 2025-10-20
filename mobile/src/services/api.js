@@ -2,9 +2,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 
-// Use your computer's IP address - NOT localhost!
-// Find your IP: Run 'ipconfig' in terminal and look for IPv4 Address
-const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || 'http://192.168.0.103:5000/api';
+// Using deployed backend URL
+const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || 'https://react-native-mern-project.onrender.com/api';
 
 /**
  * API Service for Mobile App

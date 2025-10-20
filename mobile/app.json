@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "sdkVersion": "54.0.0",
     "extra": {
-      "apiUrl": "http://192.168.0.103:5000/api"
+      "apiUrl": "https://react-native-mern-project.onrender.com/api"
     },
     "assetBundlePatterns": [
       "**/*"

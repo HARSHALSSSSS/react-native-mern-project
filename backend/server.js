@@ -14,6 +14,7 @@ const userAuthRoutes = require('./routes/userAuthRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const checkinRoutes = require('./routes/checkinRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const seedRoutes = require('./routes/seedRoutes');
 
 // Initialize Express app
 const app = express();
@@ -38,6 +39,7 @@ app.use('/api/user/auth', userAuthRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/checkin', checkinRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/seed', seedRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
