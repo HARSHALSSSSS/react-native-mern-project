@@ -73,10 +73,19 @@ exports.createEvent = async (req, res) => {
       featured: featured || false,
     });
 
-    // Add poster if file was uploaded
+    // Add poster if file was uploaded (optional)
     if (req.file) {
-      event.poster = `/uploads/${req.file.filename}`;
+      // For memory storage (production), store as base64
+      if (process.env.NODE_ENV === 'production' && req.file.buffer) {
+        const base64 = req.file.buffer.toString('base64');
+        event.poster = `data:${req.file.mimetype};base64,${base64}`;
+      } else {
+        // For disk storage (development)
+        event.poster = `/uploads/${req.file.filename}`;
+      }
     }
+
+    console.log('Saving event:', { title, category, venue, organizer: req.admin.id });
 
     await event.save();
 
