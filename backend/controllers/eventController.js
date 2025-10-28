@@ -11,6 +11,10 @@ const { calculateEventStatus } = require('../utils/helpers');
 // Create Event
 exports.createEvent = async (req, res) => {
   try {
+    console.log('Creating event with body:', req.body);
+    console.log('Admin ID:', req.admin?.id);
+    console.log('File:', req.file);
+
     const {
       title,
       description,
@@ -85,10 +89,13 @@ exports.createEvent = async (req, res) => {
       data: { event },
     });
   } catch (error) {
+    console.error('Event creation error:', error);
+    console.error('Error stack:', error.stack);
     res.status(500).json({
       success: false,
       message: 'Error creating event',
       error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
     });
   }
 };
