@@ -60,7 +60,7 @@ const Events = () => {
         category: event.category._id,
         venue: event.venue._id,
         startDate: event.startDate.split('T')[0],
-        startTime: event.startTime,
+        startTime: event.startTime || '09:00',
         totalCapacity: event.totalCapacity,
         ticketPrice: event.ticketPrice,
       });
@@ -72,7 +72,7 @@ const Events = () => {
         category: '',
         venue: '',
         startDate: '',
-        startTime: '',
+        startTime: '09:00',
         totalCapacity: '',
         ticketPrice: '',
       });

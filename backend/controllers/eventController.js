@@ -11,9 +11,10 @@ const { calculateEventStatus } = require('../utils/helpers');
 // Create Event
 exports.createEvent = async (req, res) => {
   try {
-    console.log('Creating event with body:', req.body);
-    console.log('Admin ID:', req.admin?.id);
-    console.log('File:', req.file);
+    console.log('=== EVENT CREATION START ===');
+    console.log('Body:', req.body);
+    console.log('File:', req.file ? { fieldname: req.file.fieldname, size: req.file.size } : 'No file');
+    console.log('Admin:', req.admin);
 
     const {
       title,
@@ -30,32 +31,47 @@ exports.createEvent = async (req, res) => {
       featured,
     } = req.body;
 
+    console.log('Form fields:', { title, description, category, venue, startDate, startTime, endTime, totalCapacity, ticketPrice });
+
     // Validate required fields
     if (!title || !description || !category || !venue || !startDate || !totalCapacity || ticketPrice === undefined) {
+      console.log('VALIDATION FAILED - Missing required fields');
       return res.status(400).json({
         success: false,
         message: 'Please provide all required fields',
+        received: { title, description, category, venue, startDate, totalCapacity, ticketPrice },
       });
     }
 
+    // Validate startTime and endTime (provide defaults if not provided)
+    const finalStartTime = startTime || '09:00';
+    const finalEndTime = endTime || '17:00';
+
+    console.log('Using times:', { startTime: finalStartTime, endTime: finalEndTime });
+
+    console.log('Validation passed. Checking category...');
     // Check if category exists
     const categoryExists = await Category.findById(category);
     if (!categoryExists) {
+      console.log('Category not found:', category);
       return res.status(404).json({
         success: false,
         message: 'Category not found',
       });
     }
 
+    console.log('Category found. Checking venue...');
     // Check if venue exists
     const venueExists = await Venue.findById(venue);
     if (!venueExists) {
+      console.log('Venue not found:', venue);
       return res.status(404).json({
         success: false,
         message: 'Venue not found',
       });
     }
 
+    console.log('Venue found. Creating event object...');
     const event = new Event({
       title,
       description,
@@ -63,8 +79,8 @@ exports.createEvent = async (req, res) => {
       venue,
       startDate,
       endDate: endDate || startDate,
-      startTime,
-      endTime,
+      startTime: finalStartTime,
+      endTime: finalEndTime,
       totalCapacity,
       remainingCapacity: totalCapacity,
       ticketPrice,
@@ -75,31 +91,35 @@ exports.createEvent = async (req, res) => {
 
     // Add poster if file was uploaded (optional)
     if (req.file) {
+      console.log('Processing file upload...');
       // For memory storage (production), store as base64
       if (process.env.NODE_ENV === 'production' && req.file.buffer) {
         const base64 = req.file.buffer.toString('base64');
-        event.poster = `data:${req.file.mimetype};base64,${base64}`;
+        event.poster = `data:${req.file.mimetype};base64,${base64.substring(0, 50)}...`;
       } else {
         // For disk storage (development)
         event.poster = `/uploads/${req.file.filename}`;
       }
     }
 
-    console.log('Saving event:', { title, category, venue, organizer: req.admin.id });
-
+    console.log('Saving event to database...');
     await event.save();
+    console.log('Event saved with ID:', event._id);
 
+    console.log('Populating references...');
     // Populate references
     await event.populate('category venue');
 
+    console.log('=== EVENT CREATION SUCCESS ===');
     res.status(201).json({
       success: true,
       message: 'Event created successfully',
       data: { event },
     });
   } catch (error) {
-    console.error('Event creation error:', error);
-    console.error('Error stack:', error.stack);
+    console.error('=== EVENT CREATION ERROR ===');
+    console.error('Error:', error.message);
+    console.error('Stack:', error.stack);
     res.status(500).json({
       success: false,
       message: 'Error creating event',
