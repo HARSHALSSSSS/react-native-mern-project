@@ -38,10 +38,42 @@ export const venueService = {
  * Event Service
  */
 export const eventService = {
-  create: (data) => apiClient.post('/events', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  create: (data) => {
+    const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('description', data.description);
+    formData.append('category', data.category);
+    formData.append('venue', data.venue);
+    formData.append('startDate', data.startDate);
+    formData.append('startTime', data.startTime || '');
+    formData.append('endDate', data.endDate || data.startDate);
+    formData.append('endTime', data.endTime || '');
+    formData.append('totalCapacity', data.totalCapacity);
+    formData.append('ticketPrice', data.ticketPrice);
+    formData.append('tags', JSON.stringify(data.tags || []));
+    formData.append('featured', data.featured || false);
+    if (data.poster) formData.append('poster', data.poster);
+    return apiClient.post('/events', formData);
+  },
   getAll: (params) => apiClient.get('/events', { params }),
   getById: (id) => apiClient.get(`/events/${id}`),
-  update: (id, data) => apiClient.put(`/events/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  update: (id, data) => {
+    const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('description', data.description);
+    formData.append('category', data.category);
+    formData.append('venue', data.venue);
+    formData.append('startDate', data.startDate);
+    formData.append('startTime', data.startTime || '');
+    formData.append('endDate', data.endDate || data.startDate);
+    formData.append('endTime', data.endTime || '');
+    formData.append('totalCapacity', data.totalCapacity);
+    formData.append('ticketPrice', data.ticketPrice);
+    formData.append('tags', JSON.stringify(data.tags || []));
+    formData.append('featured', data.featured || false);
+    if (data.poster) formData.append('poster', data.poster);
+    return apiClient.put(`/events/${id}`, formData);
+  },
   delete: (id) => apiClient.delete(`/events/${id}`),
   getByOrganizer: (params) => apiClient.get('/events/organizer/events', { params }),
 };
