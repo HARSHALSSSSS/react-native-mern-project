@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   TextInput,
   SafeAreaView,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import { eventService } from '../services';
 
@@ -20,27 +21,46 @@ const HomeScreen = ({ navigation }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+  const pollingIntervalRef = useRef(null);
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  // Fetch events on screen focus
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchEvents();
+      
+      // Set up polling to refresh events every 30 seconds
+      pollingIntervalRef.current = setInterval(() => {
+        console.log('Auto-refreshing events...');
+        fetchEvents();
+      }, 30000); // Refresh every 30 seconds
+
+      // Cleanup polling when screen loses focus
+      return () => {
+        if (pollingIntervalRef.current) {
+          clearInterval(pollingIntervalRef.current);
+        }
+      };
+    }, [])
+  );
 
   const fetchEvents = async () => {
     try {
-      setLoading(true);
+      setLoading(false); // Don't show loading spinner if already has data
       const response = await eventService.getAll({
         status: 'upcoming',
         limit: 50,
       });
       setEvents(response.data.data.events);
+      setRefreshing(false);
     } catch (error) {
       console.error('Error fetching events:', error);
-    } finally {
-      setLoading(false);
+      setRefreshing(false);
     }
   };
 
   const handleRefresh = () => {
+    setRefreshing(true);
     fetchEvents();
   };
 
@@ -104,7 +124,7 @@ const HomeScreen = ({ navigation }) => {
           keyExtractor={(item) => item._id}
           contentContainerStyle={styles.eventsList}
           onRefresh={handleRefresh}
-          refreshing={loading}
+          refreshing={refreshing}
         />
       ) : (
         <View style={styles.emptyContainer}>
