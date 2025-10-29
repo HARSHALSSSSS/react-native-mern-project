@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
+import Constants from 'expo-constants';
 import { userAuthService } from '../services';
 import { useAuth } from '../context/AuthContext';
 import { FontAwesome } from '@expo/vector-icons';
@@ -33,8 +34,13 @@ const LoginScreen = ({ navigation }) => {
     try {
       setLoading(true);
       setError('');
+      
+      console.log('Logging in with:', { email });
+      console.log('API Base URL:', Constants.expoConfig?.extra?.apiUrl);
 
       const response = await userAuthService.login(email, password);
+      console.log('Login response:', response.data);
+      
       const { user, token } = response.data.data;
 
       await login(user, token);
@@ -43,7 +49,12 @@ const LoginScreen = ({ navigation }) => {
         routes: [{ name: 'HomeScreen' }],
       });
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login error:', err);
+      console.error('Error response:', err.response?.data);
+      console.error('Error status:', err.response?.status);
+      console.error('Error message:', err.message);
+      
+      setError(err.response?.data?.message || err.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }

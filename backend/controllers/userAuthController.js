@@ -71,6 +71,7 @@ exports.userRegister = async (req, res) => {
 exports.userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('User login attempt:', { email });
 
     // Validate required fields
     if (!email || !password) {
@@ -81,41 +82,70 @@ exports.userLogin = async (req, res) => {
     }
 
     // Check if user exists
+    console.log('Checking if user exists...');
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
+      console.log('User not found:', email);
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password',
       });
     }
 
+    console.log('User found. Comparing password...');
     // Check password
-    const isPasswordCorrect = await user.comparePassword(password);
+    let isPasswordCorrect = false;
+    try {
+      isPasswordCorrect = await user.comparePassword(password);
+    } catch (compareError) {
+      console.error('Password comparison error:', compareError);
+      return res.status(500).json({
+        success: false,
+        message: 'Error verifying password',
+        error: compareError.message,
+      });
+    }
+    
     if (!isPasswordCorrect) {
+      console.log('Password incorrect for user:', email);
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password',
       });
     }
 
+    console.log('Password correct. Checking if active...');
     // Check if user is active
     if (!user.isActive) {
+      console.log('User account inactive:', email);
       return res.status(403).json({
         success: false,
         message: 'User account is inactive',
       });
     }
 
-    // Update last login
-    user.lastLogin = new Date();
-    await user.save();
+    console.log('Updating last login...');
+    // Update last login without triggering password hash
+    await User.findByIdAndUpdate(user._id, { lastLogin: new Date() });
 
+    console.log('Generating token...');
     // Generate token
-    const token = generateToken({
-      id: user._id,
-      email: user.email,
-    });
+    let token;
+    try {
+      token = generateToken({
+        id: user._id,
+        email: user.email,
+      });
+    } catch (tokenError) {
+      console.error('Token generation error:', tokenError);
+      return res.status(500).json({
+        success: false,
+        message: 'Error generating token',
+        error: tokenError.message,
+      });
+    }
 
+    console.log('Login successful for:', email);
     res.json({
       success: true,
       message: 'Login successful',
@@ -132,10 +162,13 @@ exports.userLogin = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error('User login error:', error);
+    console.error('Error stack:', error.stack);
     res.status(500).json({
       success: false,
       message: 'Error logging in',
       error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
     });
   }
 };
