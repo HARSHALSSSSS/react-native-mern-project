@@ -3,12 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import { userAuthService } from '../services';
 import { useAuth } from '../context/AuthContext';
@@ -44,10 +44,7 @@ const LoginScreen = ({ navigation }) => {
       const { user, token } = response.data.data;
 
       await login(user, token);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'HomeScreen' }],
-      });
+      // Navigation will happen automatically via AuthContext
     } catch (err) {
       console.error('Login error:', err);
       console.error('Error response:', err.response?.data);
