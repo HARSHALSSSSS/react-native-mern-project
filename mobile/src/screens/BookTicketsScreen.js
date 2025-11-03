@@ -149,9 +149,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e0e0e0',
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600',
     color: '#333',
+    numberOfLines: 1,
   },
   content: {
     flex: 1,
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   label: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
     color: '#333',
     marginBottom: 12,
@@ -220,8 +221,10 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   infoText: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#333',
+    numberOfLines: 1,
+    flexWrap: 'wrap',
   },
   infoKey: {
     fontWeight: '600',
@@ -240,9 +243,10 @@ const styles = StyleSheet.create({
   },
   bookButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
     marginLeft: 8,
+    numberOfLines: 1,
   },
 });
 

@@ -76,6 +76,7 @@ export const eventService = {
   },
   delete: (id) => apiClient.delete(`/events/${id}`),
   getByOrganizer: (params) => apiClient.get('/events/organizer/events', { params }),
+  getParticipants: (eventId) => apiClient.get(`/events/${eventId}/participants`),
 };
 
 /**

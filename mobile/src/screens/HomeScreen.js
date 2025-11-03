@@ -155,9 +155,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e0e0e0',
   },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '700',
     color: '#333',
+    numberOfLines: 1,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -201,10 +202,11 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   eventTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     color: '#333',
     marginBottom: 8,
+    numberOfLines: 2,
   },
   eventMeta: {
     flexDirection: 'row',
@@ -213,13 +215,19 @@ const styles = StyleSheet.create({
   },
   eventDate: {
     marginLeft: 6,
-    fontSize: 12,
+    fontSize: 11,
     color: '#666',
+    flex: 1,
+    flexWrap: 'wrap',
+    numberOfLines: 1,
   },
   eventVenue: {
     marginLeft: 6,
-    fontSize: 12,
+    fontSize: 11,
     color: '#666',
+    flex: 1,
+    flexWrap: 'wrap',
+    numberOfLines: 1,
   },
   eventPrice: {
     fontSize: 16,

@@ -145,16 +145,17 @@ const styles = StyleSheet.create({
   },
   posterImage: {
     width: '100%',
-    height: 300,
+    height: 220,
   },
   content: {
-    padding: 16,
+    padding: 12,
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '700',
     color: '#333',
     marginBottom: 20,
+    numberOfLines: 3,
   },
   infoSection: {
     backgroundColor: '#f8f9fa',
@@ -165,37 +166,41 @@ const styles = StyleSheet.create({
   infoRow: {
     flexDirection: 'row',
     marginBottom: 12,
+    alignItems: 'flex-start',
   },
   infoText: {
     marginLeft: 12,
     flex: 1,
+    paddingRight: 8,
   },
   infoLabel: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#999',
     marginBottom: 4,
   },
   infoValue: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
     color: '#333',
+    numberOfLines: 2,
   },
   infoSubValue: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#666',
     marginTop: 2,
+    numberOfLines: 2,
   },
   descriptionSection: {
     marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: '#333',
     marginBottom: 8,
   },
   description: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#666',
     lineHeight: 20,
   },

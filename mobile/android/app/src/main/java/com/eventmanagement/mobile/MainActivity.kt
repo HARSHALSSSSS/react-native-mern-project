@@ -1,4 +1,4 @@
-package com.eventmanagermobile
+package com.eventmanagement.mobile
 
 import android.os.Build
 import android.os.Bundle

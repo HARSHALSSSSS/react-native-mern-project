@@ -20,6 +20,9 @@ router.get('/organizer/events', authMiddleware, eventController.getEventsByOrgan
 // Get event by ID (public)
 router.get('/:id', eventController.getEventById);
 
+// Get event participants (admin only)
+router.get('/:eventId/participants', authMiddleware, eventController.getEventParticipants);
+
 // Update event (admin only)
 router.put('/:id', authMiddleware, upload.single('poster'), eventController.updateEvent);
 

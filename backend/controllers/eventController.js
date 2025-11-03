@@ -311,4 +311,51 @@ exports.getEventsByOrganizer = async (req, res) => {
   }
 };
 
+// Get Event Participants (Bookings for an event)
+exports.getEventParticipants = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+
+    // Get event to verify it exists
+    const event = await Event.findById(eventId).populate('category venue');
+
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: 'Event not found',
+      });
+    }
+
+    // Get all bookings for this event
+    const bookings = await Booking.find({ event: eventId })
+      .populate('user', 'firstName lastName email phone address')
+      .sort({ createdAt: -1 });
+
+    // Calculate stats
+    const stats = {
+      totalBookings: bookings.length,
+      confirmedBookings: bookings.filter((b) => b.bookingStatus === 'confirmed').length,
+      totalTickets: bookings.reduce((sum, b) => sum + b.quantity, 0),
+      totalRevenue: bookings.reduce((sum, b) => sum + b.totalPrice, 0),
+      checkedIn: bookings.filter((b) => b.checkedIn).length,
+    };
+
+    res.json({
+      success: true,
+      message: 'Event participants fetched successfully',
+      data: {
+        event,
+        bookings,
+        stats,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching event participants',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = exports;

@@ -150,9 +150,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e0e0e0',
   },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '700',
     color: '#333',
+    numberOfLines: 1,
   },
   bookingsList: {
     paddingHorizontal: 16,
@@ -176,14 +177,17 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   eventTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: '#333',
+    numberOfLines: 2,
+    flex: 1,
   },
   bookingRef: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#999',
     marginTop: 4,
+    numberOfLines: 1,
   },
   statusBadge: {
     paddingHorizontal: 8,
@@ -209,9 +213,12 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   detailText: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#666',
     marginLeft: 8,
+    flex: 1,
+    numberOfLines: 1,
+    flexWrap: 'wrap',
   },
   bookingFooter: {
     flexDirection: 'row',
@@ -233,7 +240,7 @@ const styles = StyleSheet.create({
   },
   qrText: {
     color: '#667eea',
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '600',
     marginLeft: 4,
   },

@@ -9,7 +9,6 @@ import {
   ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Constants from 'expo-constants';
 import { userAuthService } from '../services';
 import { useAuth } from '../context/AuthContext';
 import { FontAwesome } from '@expo/vector-icons';
@@ -36,7 +35,6 @@ const LoginScreen = ({ navigation }) => {
       setError('');
       
       console.log('Logging in with:', { email });
-      console.log('API Base URL:', Constants.expoConfig?.extra?.apiUrl);
 
       const response = await userAuthService.login(email, password);
       console.log('Login response:', response.data);
@@ -158,13 +156,14 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '700',
     color: '#fff',
     marginBottom: 4,
+    numberOfLines: 1,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#e0e0e0',
   },
   errorBox: {
@@ -190,7 +189,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   label: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
     color: '#333',
     marginBottom: 8,
@@ -201,7 +200,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    fontSize: 14,
+    fontSize: 13,
     color: '#333',
   },
   passwordInput: {
@@ -215,7 +214,7 @@ const styles = StyleSheet.create({
   passwordField: {
     flex: 1,
     paddingVertical: 10,
-    fontSize: 14,
+    fontSize: 13,
     color: '#333',
   },
   loginButton: {
@@ -230,8 +229,9 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
+    numberOfLines: 1,
   },
   registerLink: {
     flexDirection: 'row',
@@ -241,11 +241,12 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: '#666',
-    fontSize: 14,
+    fontSize: 13,
+    numberOfLines: 1,
   },
   registerButton: {
     color: '#667eea',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
   },
   demoBox: {
@@ -260,8 +261,9 @@ const styles = StyleSheet.create({
   },
   demoText: {
     color: '#e0e0e0',
-    fontSize: 12,
+    fontSize: 11,
     marginBottom: 4,
+    numberOfLines: 1,
   },
 });
 

@@ -122,21 +122,23 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   name: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '700',
     color: '#333',
     marginBottom: 4,
+    numberOfLines: 2,
   },
   email: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#999',
+    numberOfLines: 1,
   },
   section: {
     marginTop: 12,
     backgroundColor: '#fff',
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
     color: '#667eea',
     paddingHorizontal: 16,
@@ -155,14 +157,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   infoLabel: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#999',
     marginBottom: 2,
   },
   infoValue: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
     color: '#333',
+    numberOfLines: 2,
+    flexWrap: 'wrap',
   },
   menuItem: {
     flexDirection: 'row',
@@ -175,9 +179,10 @@ const styles = StyleSheet.create({
   menuText: {
     flex: 1,
     marginLeft: 12,
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '500',
     color: '#333',
+    numberOfLines: 1,
   },
   logoutButton: {
     marginHorizontal: 16,
@@ -193,9 +198,10 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     marginLeft: 8,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: '#d32f2f',
+    numberOfLines: 1,
   },
 });
 
